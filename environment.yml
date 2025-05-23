@@ -1,0 +1,13 @@
+channels:
+ - conda-forge
+ - bioconda
+ - defaults
+dependencies:
+ - samtools/1.16
+ - bedtools/2.27
+ - exonerate/2.4 #exonerate-2.4.0
+ - genometools-genometools/1.5
+ - repeatmasker/4.0
+ - perl-bioperl/1.7   #perl-bioperl-1.7.8
+ - perl-getopt-long
+ - perl-data-dumper   #perl-data-dumper-2.183 

@@ -1,32 +1,24 @@
 ########################################################################################
-#${threadN} ${TeIDsPrefix} ${chroms}
-threadN=$1
-chroms=$3
-
+threadN=128
 ########################################################################################
-for chrom in "${chroms[@]}"; do
-    mkdir -p result/${chrom}
-    cd result/${chrom}
+while read -r line; do
+    chrom=$(echo "$line" | awk '{print $1}')
 
-    while read -r line; do
-        prefix=$(echo "$line" | awk '{print $1}')
-        mkdir -p split/${prefix}.RM
-
-        RepeatMasker \
-            -lib ../../script/CLARI-TE/clariTeRep.fna \
-            -xsmall \
-            -nolow \
-            -xm \
-            -pa ${threadN}\
-            -q \
-            -dir split/${prefix}.RM \
-            split/${prefix}.fa \
-            1> split/${prefix}.RM/repeatmasker.log 2>&1 &
-
-    done < "${chrom}.windows.fa.fai"
-    cd ../..
-done
+    mkdir -p result/${chrom}/${chrom}.RM
+    RepeatMasker \
+        -lib ./script/CLARI-TE/clariTeRep.fna \
+        -xsmall \
+        -nolow \
+        -xm \
+        -pa ${threadN}\
+        -q \
+        -dir result/${chrom}/${chrom}.RM \
+        result/${chrom}/${chrom}.fa \
+        1> result/${chrom}/${chrom}.RM/repeatmasker.log \
+        2> result/${chrom}/${chrom}.RM/repeatmasker.err
+done < "result/ref.fa.fai"
 wait
+
 
 ########################################################################################
 #    -pa(rallel) [number]
